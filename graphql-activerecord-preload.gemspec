@@ -6,7 +6,7 @@ require 'graphql/active_record_preload/version'
 Gem::Specification.new do |spec|
   spec.name          = "graphql-active_record_preload"
   spec.version       = GraphQL::ActiveRecordPreload::VERSION
-  spec.authors       = ["TODO: Write your name"]
+  spec.authors       = ["Marc-Andre Giroux"]
   spec.email         = ["mgiroux0@gmail.com"]
 
   spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rspec"
 
   spec.add_runtime_dependency "activerecord"
   spec.add_runtime_dependency "graphql"
