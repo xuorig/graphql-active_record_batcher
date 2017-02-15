@@ -1,8 +1,9 @@
+require 'promise.rb'
 require 'graphql/batch'
 
 module GraphQL
   module ActiveRecordBatcher
-    class Graph::FindLoader < GraphQL::Batch::Loader
+    class FindByIdLoader < GraphQL::Batch::Loader
       def initialize(model)
         @model = model
       end

@@ -1,5 +1,5 @@
+require 'promise.rb'
 require 'graphql/batch'
-require 'promise'
 
 module GraphQL
   module ActiveRecordBatcher
@@ -9,7 +9,7 @@ module GraphQL
         @association = association
       end
 
-      def load
+      def load(record)
         raise TypeError, "#{@model} loader can't load association for #{record.class}" unless record.is_a?(@model)
         return Promise.resolve(read_association(record)) if association_loaded?(record)
         super
@@ -32,6 +32,10 @@ module GraphQL
       private
 
       attr_reader :model, :association
+
+      def association_loaded?(record)
+      record.association(@association).loaded?
+      end
     end
   end
 end
