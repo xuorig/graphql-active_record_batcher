@@ -96,6 +96,13 @@ Schema = GraphQL::Schema.define do
 end
 ```
 
+### TODO
+
+  - [ ] Expose a way to batch finds
+  - [ ] Expose a way or documentation on how to batch the `node` field
+  - [ ] Accept an array of preloads
+  - [ ] Accept nested preloads
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
