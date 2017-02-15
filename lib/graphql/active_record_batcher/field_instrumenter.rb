@@ -1,5 +1,5 @@
 module GraphQL
-  module ActiveRecordPreload
+  module ActiveRecordBatcher
     class FieldInstrumenter
       def instrument(type, field)
         model = type.metadata[:model]
@@ -32,6 +32,10 @@ module GraphQL
 
       def validate_preload(type, association_to_preload)
         model = type.metadata[:model]
+
+        unless model.reflect_on_association(association_to_preload)
+          raise ArgumentError, "No association #{@association_name} on #{@model}"
+        end
       end
     end
   end

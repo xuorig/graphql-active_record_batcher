@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'graphql/active_record_preload/version'
+require 'graphql/active_record_batcher/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "graphql-active_record_preload"
-  spec.version       = GraphQL::ActiveRecordPreload::VERSION
+  spec.name          = "graphql-active_record_batcher"
+  spec.version       = GraphQL::ActiveRecordBatcher::VERSION
   spec.authors       = ["Marc-Andre Giroux"]
   spec.email         = ["mgiroux0@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Association Preloading and Query Batching for GraphQL}
+  spec.description   = %q{Association Preloading and Query Batching for GraphQL}
+  spec.homepage      = "http://mgiroux.me"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
@@ -34,4 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "activerecord"
   spec.add_runtime_dependency "graphql"
   spec.add_runtime_dependency "graphql-batch"
+  spec.add_runtime_dependency "promise"
 end

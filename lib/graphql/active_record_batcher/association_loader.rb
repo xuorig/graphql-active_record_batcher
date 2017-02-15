@@ -1,11 +1,23 @@
 require 'graphql/batch'
+require 'promise'
 
 module GraphQL
-  module ActiveRecordPreload
+  module ActiveRecordBatcher
     class AssociationLoader < GraphQL::Batch::Loader
       def initialize(model, association)
         @model = model
         @association = association
+      end
+
+      def load
+        raise TypeError, "#{@model} loader can't load association for #{record.class}" unless record.is_a?(@model)
+        return Promise.resolve(read_association(record)) if association_loaded?(record)
+        super
+      end
+
+      # We want to load the associations on all records, even if they have the same id
+      def cache_key(record)
+        record.object_id
       end
 
       def perform(records)

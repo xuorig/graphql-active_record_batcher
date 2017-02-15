@@ -1,5 +1,5 @@
 module GraphQL
-  module ActiveRecordPreload
+  module ActiveRecordBatcher
     VERSION = "0.1.0"
   end
 end
