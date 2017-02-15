@@ -1,10 +1,10 @@
 # Graphql::ActiveRecordBatcher
 
 `GraphQL::ActiveRecordBatcher` is a toolkit to batch record loading as well as preload
-active record association during GraphQL Execution.
+ActiveRecord association durings GraphQL Execution.
 
-It is meant to be use with the `graphql` gem and uses `graphql-batch` under the hood to
-preload and batch external calls.
+It is meant to be used with the `graphql` gem and uses `graphql-batch` under the hood to
+preload and batch calls to your database.
 
 ## Installation
 
