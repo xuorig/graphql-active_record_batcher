@@ -64,9 +64,6 @@ module FakeSchema
 
   Schema = GraphQL::Schema.define do
     query Query
-
-    lazy_resolve(Promise, :sync)
-    instrument(:query, GraphQL::Batch::Setup)
-    instrument(:field, GraphQL::ActiveRecordBatcher::FieldInstrumenter.new)
+    use_preloading(true)
   end
 end
