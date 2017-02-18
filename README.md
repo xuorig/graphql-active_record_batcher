@@ -24,6 +24,17 @@ Or install it yourself as:
 
 ## Usage
 
+### Set up preloading for a Schema
+
+```ruby
+Schema = GraphQL::Schema.define do
+  # Enable preloading on a per-schema basis
+  use_preloading
+  query Query
+  mutation Mutation
+end
+```
+
 ### Preloading Associations
 
 Using GraphQL without preloading associations results in under performant API and
@@ -64,7 +75,7 @@ StarWarsMovie = GraphQL::ObjectType.define do
   # the parent object
   model Movie
 
-  field :characters, !types[!Dog] do
+  field :characters, !types[!Character] do
     preloads(:characters)
     resolve ->(movie, _, _) { movie.characters }
   end
@@ -79,20 +90,15 @@ Associations will now be preloaded and only 3 queries are used this time:
 3: SELECT   "characters".* FROM "characters" WHERE "characters"."movie_d" IN (1, 2)
 ```
 
-### Schema config
+#### Preload multiple associations
+
+If a certain call loads more than one association, you can use an
+array to express the ones to preload.
 
 ```ruby
-Schema = GraphQL::Schema.define do
-  query Query
-  mutation Mutation
-
-  # GraphQL Batch setup. Handle Promise objects.
-  lazy_resolve(Promise, :sync)
-  instrument(:query, GraphQL::Batch::Setup)
-
-  # FieldInstrumenter takes care of preloading assocations you've
-  # marked using the `preloads` attribute
-  instrument(:field, GraphQL::ActiveRecordBatcher::FieldInstrumenter.new)
+field :characters, !types[!Character] do
+  preloads(:characters, :planets)
+  resolve ->(movie, _, _) { movie.characters }
 end
 ```
 
