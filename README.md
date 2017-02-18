@@ -1,5 +1,11 @@
 # GraphQL::ActiveRecordBatcher
 
+[![Code Climate](https://codeclimate.com/github/xuorig/graphql-active_record_batcher/badges/gpa.svg)](https://codeclimate.com/github/xuorig/graphql-active_record_batcher)
+
+[![Test Coverage](https://codeclimate.com/github/xuorig/graphql-active_record_batcher/badges/coverage.svg)](https://codeclimate.com/github/xuorig/graphql-active_record_batcher/coverage)
+
+[![Issue Count](https://codeclimate.com/github/xuorig/graphql-active_record_batcher/badges/issue_count.svg)](https://codeclimate.com/github/xuorig/graphql-active_record_batcher)
+
 `GraphQL::ActiveRecordBatcher` is a toolkit to batch record loading as well as preload
 ActiveRecord association durings GraphQL Execution.
 
