@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-class AssociationLoaderTest < Minitest::Test
+class FieldInstrumenterTest < Minitest::Test
   def test_no_queries
     # This should perform 3 queries since the top level
     # fields cat and secondCat are not batched:
