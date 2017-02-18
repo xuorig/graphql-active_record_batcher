@@ -1,4 +1,8 @@
 language: ruby
+rvm:
+- 2.1.0 # Lowest version officially supported by that gem
+- 2.2.5
+- 2.3.3
 sudo: false
 cache: bundler
 env: CODECLIMATE_REPO_TOKEN=732c35e2a34d5320f2aec300b579358cde538a40567c34f06aeeb0c3d0f1060c
