@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "activerecord"
   spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "byebug"
+  spec.add_development_dependency "codeclimate-test-reporter"
 
   spec.add_runtime_dependency "activerecord"
   spec.add_runtime_dependency "graphql"
