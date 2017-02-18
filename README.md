@@ -35,7 +35,7 @@ Or install it yourself as:
 ```ruby
 Schema = GraphQL::Schema.define do
   # Enable preloading on a per-schema basis
-  use_preloading
+  enable_active_record_batching
   query Query
   mutation Mutation
 end
