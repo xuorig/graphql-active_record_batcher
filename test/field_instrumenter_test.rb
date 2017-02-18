@@ -12,14 +12,14 @@ class FieldInstrumenterTest < Minitest::Test
     assert_queries(3) do
       FakeSchema::Schema.execute <<-GRAPHQL
         query {
-          cat {
-            dogFriends {
-              isMean
+          shop {
+            allProducts {
+              price
             }
           }
-          secondCat {
-            dogFriends {
-              isMean
+          anotherShop {
+            allProducts {
+              price
             }
           }
         }
@@ -28,18 +28,18 @@ class FieldInstrumenterTest < Minitest::Test
   end
 
   def test_raises_an_argument_error_when_association_does_not_exist
-    bad_cat = GraphQL::ObjectType.define do
-      name "Cat"
-      model FakeSchema::Data::Cat
+    shop = GraphQL::ObjectType.define do
+      name "Shop"
+      model FakeSchema::Data::Shop
 
-      field :dogs, !types[!FakeSchema::Dog] do
-        preloads(:dogz)
+      field :products, !types[!FakeSchema::Product] do
+        preloads(:productz)
       end
     end
 
     query = GraphQL::ObjectType.define do
       name "Query"
-      field :cat, bad_cat, resolve: ->(_, _, _) { FakeSchema::Data::Cat.find(1) }
+      field :shop, shop, resolve: ->(_, _, _) { FakeSchema::Data::Shop.find(1) }
     end
 
     exception = assert_raises(ArgumentError) do
@@ -49,21 +49,46 @@ class FieldInstrumenterTest < Minitest::Test
       end
     end
 
-    assert_equal "No association `dogz` on model `FakeSchema::Data::Cat`", exception.message
+    assert_equal "No association `productz` on model `FakeSchema::Data::Product`", exception.message
   end
 
-  def test_raises_an_error_when_no_model_is_set
-    bad_cat = GraphQL::ObjectType.define do
-      name "Cat"
+  def test_raises_an_argument_error_when_association_does_not_exist
+    shop = GraphQL::ObjectType.define do
+      name "Shop"
+      model FakeSchema::Data::Shop
 
-      field :dogs, !types[!FakeSchema::Dog] do
-        preloads(:dogs)
+      field :products, !types[!FakeSchema::Product] do
+        preloads [:products, :wat]
       end
     end
 
     query = GraphQL::ObjectType.define do
       name "Query"
-      field :cat, bad_cat, resolve: ->(_, _, _) { FakeSchema::Data::Cat.find(1) }
+      field :shop, shop, resolve: ->(_, _, _) { FakeSchema::Data::Shop.find(1) }
+    end
+
+    exception = assert_raises(ArgumentError) do
+      GraphQL::Schema.define do
+        query query
+        instrument(:field, GraphQL::ActiveRecordBatcher::FieldInstrumenter.new)
+      end
+    end
+
+    assert_equal "No association `wat` on model `FakeSchema::Data::Shop`", exception.message
+  end
+
+  def test_raises_an_error_when_no_model_is_set
+    bad_shop = GraphQL::ObjectType.define do
+      name "Shop"
+
+      field :products, !types[!FakeSchema::Product] do
+        preloads(:products)
+      end
+    end
+
+    query = GraphQL::ObjectType.define do
+      name "Query"
+      field :shop, bad_shop, resolve: ->(_, _, _) { FakeSchema::Data::Shop.find(1) }
     end
 
     exception = assert_raises(StandardError) do
@@ -73,7 +98,7 @@ class FieldInstrumenterTest < Minitest::Test
       end
     end
 
-    assert_equal "No ActiveRecord Model set on type Cat's metadata. Use `model(YourActiveRecordModel)` inside the type's definition", exception.message
+    assert_equal "No ActiveRecord Model set on type Shop's metadata. Use `model(YourActiveRecordModel)` inside the type's definition", exception.message
   end
 
   def test_multiple_preloads
@@ -88,11 +113,11 @@ class FieldInstrumenterTest < Minitest::Test
     assert_queries(4) do
       FakeSchema::Schema.execute <<-GRAPHQL
         query {
-          cat {
-            preloadMany
+          shop {
+            productsAndLocations
           }
-          secondCat {
-            preloadMany
+          anotherShop {
+            productsAndLocations
           }
         }
       GRAPHQL

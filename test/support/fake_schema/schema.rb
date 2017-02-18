@@ -9,77 +9,77 @@ module FakeSchema
 
     ActiveRecord::Schema.define do
       self.verbose = false
-      create_table :cats do |t|
-        t.column :color, :string
-      end
-      create_table :dogs do |t|
-        t.column :number_of_legs, :integer
-        t.column :is_mean, :boolean
-        t.column :cat_id, :integer
-      end
-      create_table :birds do |t|
+      create_table :shops do |t|
         t.column :name, :string
-        t.column :cat_id, :integer
+      end
+      create_table :products do |t|
+        t.column :price, :integer
+        t.column :shop_id, :integer
+      end
+      create_table :locations do |t|
+        t.column :name, :string
+        t.column :shop_id, :integer
       end
     end
 
-    class Cat < ActiveRecord::Base
-      has_many :dogs
-      has_many :birds
+    class Shop < ActiveRecord::Base
+      has_many :products
+      has_many :locations
     end
 
-    class Dog < ActiveRecord::Base
+    class Product < ActiveRecord::Base
     end
 
-    class Bird < ActiveRecord::Base
+    class Location < ActiveRecord::Base
     end
 
-    cat1 = Cat.create!(color: 'white')
-    cat2 = Cat.create!(color: 'black')
+    shop1 = Shop.create!(name: 'My Lame Shop')
+    shop2 = Shop.create!(name: 'My Cool Shop')
 
-    Dog.create(number_of_legs: 3, is_mean: true, cat_id: cat1.id)
-    Dog.create(number_of_legs: 4, is_mean: true, cat_id: cat1.id)
-    Dog.create(number_of_legs: 1, is_mean: false, cat_id: cat2.id)
+    Product.create(price: 50, shop_id: shop1.id)
+    Product.create(price: 10, shop_id: shop1.id)
+    Product.create(price: 100, shop_id: shop2.id)
 
-    Bird.create(name: 'burd', cat_id: cat1.id)
-    Bird.create(name: 'berd', cat_id: cat2.id)
+    Location.create(name: 'Main Store', shop_id: shop1.id)
+    Location.create(name: 'Popup Store', shop_id: shop2.id)
   end
 
   Query = GraphQL::ObjectType.define do
     name "Query"
     description "Da Query R00T"
 
-    field :cat, Cat, resolve: ->(_, _, _) { Data::Cat.find(1) }
-    field :secondCat, Cat, resolve: ->(_, _, _) { Data::Cat.find(2) }
+    field :shop, Shop, resolve: ->(_, _, _) { Data::Shop.find(1) }
+    field :anotherShop, Shop, resolve: ->(_, _, _) { Data::Shop.find(2) }
   end
 
-  Cat = GraphQL::ObjectType.define do
-    name "Cat"
-    description "A Cat"
-    model Data::Cat
+  Shop = GraphQL::ObjectType.define do
+    name "Shop"
+    description "A Shop"
+    model Data::Shop
 
-    field :color, !types.String
-    field :dogFriends, !types[!Dog] do
-      preloads(:dogs)
-      resolve ->(cat, _, _) { cat.dogs }
+    field :name, !types.String
+
+    field :allProducts, !types[!Product] do
+      preloads(:products)
+      resolve ->(shop, _, _) { shop.products }
     end
 
-    field :preloadMany, !types.String do
-      preloads [:dogs, :birds]
-      resolve ->(cat, _, _) {
-        cat.dogs
-        cat.birds
-        'ok'
+    field :productsAndLocations, !types.String do
+      preloads [:products, :locations]
+      resolve ->(shop, _, _) {
+        shop.products
+        shop.locations
+        'test'
       }
     end
   end
 
-  Dog = GraphQL::ObjectType.define do
-    name "Dog"
-    description "A Dawg"
-    model Data::Dog
+  Product = GraphQL::ObjectType.define do
+    name "Product"
+    description "A Product"
+    model Data::Product
 
-    field :isMean, !types.Boolean, property: :is_mean
+    field :price, !types.Int
   end
 
   Schema = GraphQL::Schema.define do
