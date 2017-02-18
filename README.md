@@ -106,7 +106,7 @@ end
 
   - [ ] Expose a way to batch finds
   - [ ] Expose a way or documentation on how to batch the `node` field
-  - [ ] Accept an array of preloads
+  - [x] Accept an array of preloads
   - [ ] Accept nested preloads
 
 ## License
