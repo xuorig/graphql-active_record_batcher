@@ -60,7 +60,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord
   bundler (~> 1.11)
   byebug
   codeclimate-test-reporter
