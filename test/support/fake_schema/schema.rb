@@ -63,7 +63,8 @@ module FakeSchema
   end
 
   Schema = GraphQL::Schema.define do
+    use_preloading
+
     query Query
-    use_preloading(true)
   end
 end

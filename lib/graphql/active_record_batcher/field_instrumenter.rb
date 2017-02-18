@@ -2,9 +2,9 @@ module GraphQL
   module ActiveRecordBatcher
     class FieldInstrumenter
       def instrument(type, field)
-        association_to_preload = field.metadata[:preloads]
+        associations = field.metadata[:preloads]
 
-        if association_to_preload
+        if associations
           # Model is needed to preload an association
           unless model = type.metadata[:model]
             message = "No ActiveRecord Model set on type #{type.name}'s metadata."\
@@ -13,11 +13,11 @@ module GraphQL
           end
 
           # Make sure the association exists on the model
-          validate_preload(model, association_to_preload)
+          validate(model, associations)
 
           loader = GraphQL::ActiveRecordBatcher::AssociationLoader.new(
             model,
-            association_to_preload
+            associations
           )
 
           # "Wrap" the resolve proc with our own, which returns a promise
@@ -36,7 +36,19 @@ module GraphQL
 
       private
 
-      def validate_preload(model, association_to_preload)
+      def validate(model, associations)
+        case associations
+        when Symbol
+          validate_association(model, associations)
+        when Array
+          associations.each { |association| validate_association(model, association) }
+        else
+          raise ArgumentError, "Cannot preload associations #{associations}."\
+            "Use a Symbol to preload one association or an Array of Symbols to load many."
+        end
+      end
+
+      def validate_association(model, association_to_preload)
         unless model.reflect_on_association(association_to_preload)
           raise ArgumentError, "No association `#{association_to_preload}` on model `#{model}`"
         end
