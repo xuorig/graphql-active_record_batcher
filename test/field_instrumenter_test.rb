@@ -3,11 +3,11 @@ require_relative 'test_helper'
 class FieldInstrumenterTest < Minitest::Test
   def test_no_queries
     # This should perform 3 queries since the top level
-    # fields cat and secondCat are not batched:
-    # 1: SELECT  "cats".* FROM "cats" WHERE "cats"."id" = ? LIMIT ?  [["id", 1]
-    # 2: SELECT  "cats".* FROM "cats" WHERE "cats"."id" = ? LIMIT ?  [["id", 2]
+    # fields shop and anotherShop are not batched:
+    # 1: SELECT  "shops".* FROM "shops" WHERE "shops"."id" = ? LIMIT ?  [["id", 1]
+    # 2: SELECT  "shops".* FROM "shops" WHERE "shops"."id" = ? LIMIT ?  [["id", 2]
     # 3: Association should be batched
-    # SELECT "dogs".* FROM "dogs" WHERE "dogs"."cat_id" IN (1, 2)
+    # SELECT "products".* FROM "products" WHERE "products"."shop_id" IN (1, 2)
 
     assert_queries(3) do
       FakeSchema::Schema.execute <<-GRAPHQL
@@ -103,21 +103,21 @@ class FieldInstrumenterTest < Minitest::Test
 
   def test_multiple_preloads
     # This should perform 4 queries since the top level
-    # fields cat and secondCat are not batched:
-    # 1: SELECT  "cats".* FROM "cats" WHERE "cats"."id" = ? LIMIT ?  [["id", 1]
-    # 2: SELECT  "cats".* FROM "cats" WHERE "cats"."id" = ? LIMIT ?  [["id", 2]
+    # fields shop and secondshop are not batched:
+    # 1: SELECT  "shops".* FROM "shops" WHERE "shops"."id" = ? LIMIT ?  [["id", 1]
+    # 2: SELECT  "shops".* FROM "shops" WHERE "shops"."id" = ? LIMIT ?  [["id", 2]
     # 3: Association should be batched
-    # SELECT "dogs".* FROM "dogs" WHERE "dogs"."cat_id" IN (1, 2)
-    # SELECT "birds".* FROM "birds" WHERE "birds"."cat_id" IN (1, 2)
+    # SELECT "products".* FROM "products" WHERE "products"."shop_id" IN (1, 2)
+    # SELECT "locations".* FROM "locations" WHERE "locations"."shop_id" IN (1, 2)
 
     assert_queries(4) do
       FakeSchema::Schema.execute <<-GRAPHQL
         query {
           shop {
-            productsAndLocations
+            productsAndLoshopions
           }
           anotherShop {
-            productsAndLocations
+            productsAndLoshopions
           }
         }
       GRAPHQL
