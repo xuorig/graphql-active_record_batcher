@@ -1,4 +1,4 @@
-# Graphql::ActiveRecordBatcher
+# GraphQL::ActiveRecordBatcher
 
 `GraphQL::ActiveRecordBatcher` is a toolkit to batch record loading as well as preload
 ActiveRecord association durings GraphQL Execution.
