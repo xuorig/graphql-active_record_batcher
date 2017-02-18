@@ -76,7 +76,7 @@ StarWarsMovie = GraphQL::ObjectType.define do
   model Movie
 
   field :characters, !types[!Character] do
-    preloads(:characters)
+    preloads :characters
     resolve ->(movie, _, _) { movie.characters }
   end
 end
@@ -97,7 +97,7 @@ array to express the ones to preload.
 
 ```ruby
 field :characters, !types[!Character] do
-  preloads(:characters, :planets)
+  preloads [:characters, :planets]
   resolve ->(movie, _, _) { movie.characters }
 end
 ```
