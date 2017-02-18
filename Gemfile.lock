@@ -62,12 +62,13 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 1.11)
   byebug
-  codeclimate-test-reporter
+  codeclimate-test-reporter (~> 1.0.0)
   graphql-active_record_batcher!
   minitest (~> 5.10.1)
   minitest-focus (~> 1.1)
   minitest-reporters (~> 1.0)
   rake (~> 10.0)
+  simplecov
   sqlite3
 
 BUNDLED WITH
