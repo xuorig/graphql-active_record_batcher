@@ -75,4 +75,27 @@ class AssociationLoaderTest < Minitest::Test
 
     assert_equal "No ActiveRecord Model set on type Cat's metadata. Use `model(YourActiveRecordModel)` inside the type's definition", exception.message
   end
+
+  def test_multiple_preloads
+    # This should perform 4 queries since the top level
+    # fields cat and secondCat are not batched:
+    # 1: SELECT  "cats".* FROM "cats" WHERE "cats"."id" = ? LIMIT ?  [["id", 1]
+    # 2: SELECT  "cats".* FROM "cats" WHERE "cats"."id" = ? LIMIT ?  [["id", 2]
+    # 3: Association should be batched
+    # SELECT "dogs".* FROM "dogs" WHERE "dogs"."cat_id" IN (1, 2)
+    # SELECT "birds".* FROM "birds" WHERE "birds"."cat_id" IN (1, 2)
+
+    assert_queries(4) do
+      FakeSchema::Schema.execute <<-GRAPHQL
+        query {
+          cat {
+            preloadMany
+          }
+          secondCat {
+            preloadMany
+          }
+        }
+      GRAPHQL
+    end
+  end
 end

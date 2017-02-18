@@ -17,13 +17,21 @@ module FakeSchema
         t.column :is_mean, :boolean
         t.column :cat_id, :integer
       end
+      create_table :birds do |t|
+        t.column :name, :string
+        t.column :cat_id, :integer
+      end
     end
 
     class Cat < ActiveRecord::Base
       has_many :dogs
+      has_many :birds
     end
 
     class Dog < ActiveRecord::Base
+    end
+
+    class Bird < ActiveRecord::Base
     end
 
     cat1 = Cat.create!(color: 'white')
@@ -32,6 +40,9 @@ module FakeSchema
     Dog.create(number_of_legs: 3, is_mean: true, cat_id: cat1.id)
     Dog.create(number_of_legs: 4, is_mean: true, cat_id: cat1.id)
     Dog.create(number_of_legs: 1, is_mean: false, cat_id: cat2.id)
+
+    Bird.create(name: 'burd', cat_id: cat1.id)
+    Bird.create(name: 'berd', cat_id: cat2.id)
   end
 
   Query = GraphQL::ObjectType.define do
@@ -51,6 +62,15 @@ module FakeSchema
     field :dogFriends, !types[!Dog] do
       preloads(:dogs)
       resolve ->(cat, _, _) { cat.dogs }
+    end
+
+    field :preloadMany, !types.String do
+      preloads [:dogs, :birds]
+      resolve ->(cat, _, _) {
+        cat.dogs
+        cat.birds
+        'ok'
+      }
     end
   end
 

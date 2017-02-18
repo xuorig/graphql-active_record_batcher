@@ -15,15 +15,12 @@ module GraphQL
           # Make sure the association exists on the model
           validate(model, associations)
 
-          loader = GraphQL::ActiveRecordBatcher::AssociationLoader.new(
-            model,
-            associations
-          )
-
           # "Wrap" the resolve proc with our own, which returns a promise
           old_resolve_proc = field.resolve_proc
           new_resolve_proc = ->(obj, args, ctx) do
-            loader.load(obj).then { old_resolve_proc.call(obj, args, ctx) }
+            build_preload_promise(obj, model, associations).then do
+              old_resolve_proc.call(obj, args, ctx)
+            end
           end
 
           field.redefine do
@@ -35,6 +32,23 @@ module GraphQL
       end
 
       private
+
+      def build_preload_promise(object, model, associations)
+        if associations.is_a?(Array)
+          Promise.all(associations.map do |association|
+            loader_for(model, association).load(object)
+          end)
+        else
+          loader_for(model, associations).load(object)
+        end
+      end
+
+      def loader_for(model, association)
+        GraphQL::ActiveRecordBatcher::AssociationLoader.for(
+          model,
+          association
+        )
+      end
 
       def validate(model, associations)
         case associations
