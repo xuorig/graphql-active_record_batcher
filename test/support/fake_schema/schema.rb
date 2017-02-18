@@ -83,7 +83,7 @@ module FakeSchema
   end
 
   Schema = GraphQL::Schema.define do
-    use_preloading
+    enable_active_record_batching
 
     query Query
   end

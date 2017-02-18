@@ -114,10 +114,10 @@ class FieldInstrumenterTest < Minitest::Test
       FakeSchema::Schema.execute <<-GRAPHQL
         query {
           shop {
-            productsAndLoshopions
+            productsAndLocations
           }
           anotherShop {
-            productsAndLoshopions
+            productsAndLocations
           }
         }
       GRAPHQL
