@@ -34,8 +34,6 @@ module GraphQL
       attr_reader :model, :association
 
       def association_loaded?(record)
-        puts record
-        puts @association
         record.association(@association).loaded?
       end
     end

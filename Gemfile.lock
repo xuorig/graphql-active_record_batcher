@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    graphql-active_record_batcher (0.1.0)
+    graphql-active_record_batcher (0.2.0)
       activerecord
       graphql
       graphql-batch
@@ -62,4 +62,4 @@ DEPENDENCIES
   sqlite3
 
 BUNDLED WITH
-   1.11.2
+   1.14.2
