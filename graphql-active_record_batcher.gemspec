@@ -24,7 +24,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest", "~> 5.10.1"
   spec.add_development_dependency "minitest-focus", "~> 1.1"
   spec.add_development_dependency "minitest-reporters", "~>1.0"
-  spec.add_development_dependency "activerecord"
   spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "byebug"
   spec.add_development_dependency "codeclimate-test-reporter"
