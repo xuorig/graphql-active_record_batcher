@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    graphql-active_record_batcher (0.3.1)
+    graphql-active_record_batcher (0.3.2)
       activerecord
       graphql
       graphql-batch
