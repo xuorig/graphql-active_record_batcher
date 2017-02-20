@@ -24,8 +24,7 @@ module GraphQL
         ::ActiveRecord::Associations::Preloader.new.preload(records, association)
 
         records.each do |record|
-          association_result = record.public_send(association)
-          fulfill(record, association_result)
+          fulfill(record, read_association(record))
         end
       end
 
@@ -33,8 +32,12 @@ module GraphQL
 
       attr_reader :model, :association
 
+      def read_association(record)
+        record.public_send(association)
+      end
+
       def association_loaded?(record)
-        record.association(@association).loaded?
+        record.association(association).loaded?
       end
     end
   end
