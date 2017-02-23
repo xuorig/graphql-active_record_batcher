@@ -1,6 +1,7 @@
 require 'graphql/active_record_batcher/version'
 require 'graphql/active_record_batcher/field_instrumenter'
 require 'graphql/active_record_batcher/association_loader'
+require 'graphql/active_record_batcher/find'
 
 module GraphQL
   module ActiveRecordBatcher

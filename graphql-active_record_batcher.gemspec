@@ -33,4 +33,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "graphql"
   spec.add_runtime_dependency "graphql-batch"
   spec.add_runtime_dependency "promise.rb"
+  spec.add_runtime_dependency "globalid"
 end

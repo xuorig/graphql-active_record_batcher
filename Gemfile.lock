@@ -3,6 +3,7 @@ PATH
   specs:
     graphql-active_record_batcher (0.3.2)
       activerecord
+      globalid
       graphql
       graphql-batch
       promise.rb
@@ -29,6 +30,8 @@ GEM
       simplecov
     concurrent-ruby (1.0.4)
     docile (1.1.5)
+    globalid (0.3.7)
+      activesupport (>= 4.1.0)
     graphql (1.4.4)
     graphql-batch (0.3.1)
       graphql (>= 0.8, < 2)
