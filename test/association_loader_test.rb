@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-class FieldInstrumenterTest < Minitest::Test
+class AssociationLoaderTest < Minitest::Test
   def setup
     @loader = GraphQL::ActiveRecordBatcher::AssociationLoader.new(
       FakeSchema::Data::Shop,
